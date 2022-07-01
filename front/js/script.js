@@ -18,7 +18,7 @@ let cardsFetch = function () {
                         <article>
                             <img src="${data[i].imageUrl}" alt="${data[i].altTxt}" />
                             <h3 class="productName">${data[i].name}</h3>
-                            <p class="productDescription"> ${data[i].description}</p>
+                            <p class="productDescription">${data[i].description}</p>
                         </article>
                     </a>`;
                 productsSection.innerHTML += productCard;
