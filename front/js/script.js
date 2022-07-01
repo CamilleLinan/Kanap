@@ -1,7 +1,7 @@
 const apiUrl = 'http://localhost:3000/api/products';
 
 //---INDEX---
-//Récupération des données de l'API et les intégration dans le HTML
+//Récupération des données de l'API + intégration dans le HTML
 let cardsFetch = function () {
 
     fetch(apiUrl)
