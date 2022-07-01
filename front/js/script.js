@@ -27,7 +27,8 @@ let cardsFetch = function () {
         })
         )
 
-        .catch((err) => console.log('Erreur : ' + err));
+        .catch((err) => 
+            document.querySelector('#items').innerText = `Oups ! Il y a eu une erreur lors de l'affichage des produits :(`);
 };
 
 cardsFetch();
