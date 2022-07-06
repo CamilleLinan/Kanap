@@ -8,8 +8,6 @@ let cardsFetch = function () {
         .then((response) =>
             response.json()
         .then((data) => {
-            console.log(data);
-            
             let productsSection = document.querySelector('#items');
 
             for (i = 0; i < data.length; i ++) {
@@ -23,7 +21,6 @@ let cardsFetch = function () {
                     </a>`;
                 productsSection.innerHTML += productCard;
             }
-            console.log(document.querySelector('#items'));
         })
         )
 
