@@ -1,4 +1,4 @@
-// 1/ recuperer l'id dans l'url
+// Récuperer l'id dans l'url
 
 const qStr = window.location.search;
 
@@ -8,7 +8,7 @@ const id = urlParams.get('id');
 
 const apiUrl = 'http://localhost:3000/api/products/' + id;
 
-// 2/ si il y a un id, alors on va appeler le back/l'api pour chercher les informations du produit d'id
+// Si il y a un id, appeler le l'api pour chercher les informations du produit d'id
 
 fetch(apiUrl)
     .then((response) => response.json()
@@ -39,3 +39,25 @@ fetch(apiUrl)
     
     .catch((err) => 
         document.querySelector('.item').innerText = `Oups ! Il y a eu une erreur lors de l'affichage du produit ! :(`);
+
+// Récuperer les valeurs du HTML sélectionnées par l'utilisateur
+
+// Récuperer la couleur choisie
+function colorValue() {
+    let color = document.querySelector('#colors');
+    return color.value;
+};
+
+// Récuperer la quantité choisie
+function qtyValue() {
+    let qty = document.querySelector('#quantity');
+    return qty.value;
+};
+
+// Bouton d'ajout au panier
+const addToCart = document.querySelector('#addToCart');
+
+addToCart.addEventListener('click', () => {
+    let color = colorValue();
+    let qty = parseInt(qtyValue());
+});
