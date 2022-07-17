@@ -92,7 +92,7 @@ Consulter le panier OK ou revenir à l'accueil ANNULER`)) {
     if (cartInLocalStorage) {
         console.log(`panier existe`);
         addProductLocalStorage();
-        popupConfirm();
+        //popupConfirm();
     }
 
     // Sinon
@@ -100,6 +100,6 @@ Consulter le panier OK ou revenir à l'accueil ANNULER`)) {
         console.log(`panier n'existe pas`);
         cartInLocalStorage = [];
         addProductLocalStorage();
-        popupConfirm();
+        //popupConfirm();
     }
 });
