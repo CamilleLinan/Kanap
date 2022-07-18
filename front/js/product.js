@@ -70,36 +70,38 @@ addToCart.addEventListener(`click`, () => {
     };
 
 // Récupérer le panier dans le localStorage
-    let cartInLocalStorage = JSON.parse(localStorage.getItem(`selectedProduct`));
-    
-    // Fonction pop up
-    const popupConfirm = () => {
-        if(window.confirm(`Le produit a bien été ajouté au panier.
-Consulter le panier OK ou revenir à l'accueil ANNULER`)) {  
-            window.location.href = "./cart.html";
-        } else {
-            window.location.href = "./index.html";
-        }
-    }
+    let itemsLocalStorage = JSON.parse(localStorage.getItem(`selectedProduct`));
 
-    // Fonction ajouté un produit dans le localStorage
-    const addProductLocalStorage = () => {
-        cartInLocalStorage.push(selectionUser);
-        localStorage.setItem(`selectedProduct`, JSON.stringify(cartInLocalStorage));
+    // Fonction ajouter un produit dans le localStorage
+    const add2Cart = () => {
+        itemsLocalStorage.push(selectionUser);
+        localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
     };
 
     // Si le panier existe dans le localStorage
-    if (cartInLocalStorage) {
+    if (itemsLocalStorage) {
         console.log(`panier existe`);
-        addProductLocalStorage();
-        //popupConfirm();
+        add2Cart();
     }
 
     // Sinon
     else {
         console.log(`panier n'existe pas`);
-        cartInLocalStorage = [];
-        addProductLocalStorage();
+        itemsLocalStorage = [];
+        add2Cart();
         //popupConfirm();
     }
 });
+
+//************ TEST ************/
+
+// Si la color et qty ont une valeur --> Voir si le panier existe (+ popup de confirmation ?)
+
+    // Si le panier existe --> Voir si l'article sélectionner existe dans le panier
+        
+        // S'il existe --> push en incrémentant la "qtyChosen" à la qty actuelle du panier + sauvegarder
+        // Sinon --> push le produit dans le tableau + sauvegarder
+
+    // Sinon --> créer le tableau + push le produit dans la tableau + sauvegarder
+
+// Sinon --> Alerte `Veuillez choisir une couleur et une quantité SVP`
