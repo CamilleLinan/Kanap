@@ -40,7 +40,7 @@ fetch(apiUrl)
     .catch((err) => 
         document.querySelector('.item').innerText = `Oups ! Il y a eu une erreur lors de l'affichage du produit ! :(`);
 
-// Récuperer les valeurs du HTML sélectionnées par l'utilisateur
+//******** Récuperer les valeurs du HTML sélectionnées par l'utilisateur ********/
 
 // Récuperer la couleur choisie
 function colorValue() {
@@ -54,21 +54,6 @@ function qtyValue() {
     return qty.value;
 };
 
-// Bouton d'ajout au panier
-const addToCart = document.querySelector(`#addToCart`);
-
-// Lors du 'click' on écoute la couleur et la quantité du produit sélectionné
-addToCart.addEventListener(`click`, () => {
-    let color = colorValue();
-    let qty = parseInt(qtyValue());
-
-// Créer un objet de la sélection utlisateur avec l'id du produit
-    const selectionUser = {
-        colorChosen: color,
-        qtyChosen: qty,
-        productChosen: id,
-    };
-
 // Fonction pour récupérer le panier dans le localStorage
     const getCart = () => {   
         let itemsLocalStorage = [];
@@ -79,24 +64,45 @@ addToCart.addEventListener(`click`, () => {
     }
 
 // Fonction ajouter un produit dans le localStorage
-    const add2Cart = (selectionUser) => {
+    const add2Cart = (id, color, qty) => {
     
-    // Si la couleur et la quantité sont vides
+    // Si la couleur et la quantité sont vides --> Erreur
         if (color == "" || qty <= 0) {
             return alert(`Veuillez choisir une couleur et une quantité SVP`);
         }
-    }
-});
-
-//************ TEST ************/
-
-// Si la color et qty ont une valeur --> Voir si le panier existe (+ popup de confirmation ?)
-
-    // Si le panier existe --> Voir si l'article sélectionner existe dans le panier
         
-        // S'il existe --> push en incrémentant la "qtyChosen" à la qty actuelle du panier + sauvegarder
-        // Sinon --> push le produit dans le tableau + sauvegarder
+        let itemsLocalStorage = getCart();
+        // Si le panier n'existe pas, le créer dans un array
+        if (itemsLocalStorage.length == 0) {
+            console.log(`Le panier n'existe pas`);
+            itemsLocalStorage = [[id, color, qty]];
+        
+        // Si le panier existe
+        } else {
+            let found = false;
+            // Si l'id et la couleur de l'item existe déjà dans l'array, incrémenter la quantité choisie à la quantité du panier
+            for (let i = 0; i < itemsLocalStorage.length; i++) {
+                if (id === itemsLocalStorage[i][0] && color === itemsLocalStorage[i][1]) {
+                    found = true;
+                    itemsLocalStorage[i][2] += qty;
+                }
+            }
+            // S'ils n'existent pas, créer un nouvel array dans l'array
+            if (found == false) {
+                let item = [id, color, qty];
+                itemsLocalStorage.push(item); 
+            }
+        }
 
-    // Sinon --> créer le tableau + push le produit dans la tableau + sauvegarder
+        localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+    }
 
-// Sinon --> Alerte `Veuillez choisir une couleur et une quantité SVP`
+// Bouton d'ajout au panier
+const addToCart = document.querySelector(`#addToCart`);
+
+// Lors du 'click' on écoute la couleur et la quantité du produit sélectionné et si elles sont valides, les ajouter au panier
+addToCart.addEventListener(`click`, () => {
+    let color = colorValue();
+    let qty = parseInt(qtyValue());
+    add2Cart(id, color, qty);
+});
