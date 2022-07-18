@@ -69,27 +69,22 @@ addToCart.addEventListener(`click`, () => {
         productChosen: id,
     };
 
-// Récupérer le panier dans le localStorage
-    let itemsLocalStorage = JSON.parse(localStorage.getItem(`selectedProduct`));
-
-    // Fonction ajouter un produit dans le localStorage
-    const add2Cart = () => {
-        itemsLocalStorage.push(selectionUser);
-        localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
-    };
-
-    // Si le panier existe dans le localStorage
-    if (itemsLocalStorage) {
-        console.log(`panier existe`);
-        add2Cart();
+// Fonction pour récupérer le panier dans le localStorage
+    const getCart = () => {   
+        let itemsLocalStorage = [];
+        if (localStorage.getItem(`selectedProduct`) != null) { 
+            itemsLocalStorage = JSON.parse(localStorage.getItem(`selectedProduct`));
+        }
+        return itemsLocalStorage;
     }
 
-    // Sinon
-    else {
-        console.log(`panier n'existe pas`);
-        itemsLocalStorage = [];
-        add2Cart();
-        //popupConfirm();
+// Fonction ajouter un produit dans le localStorage
+    const add2Cart = (selectionUser) => {
+    
+    // Si la couleur et la quantité sont vides
+        if (color == "" || qty <= 0) {
+            return alert(`Veuillez choisir une couleur et une quantité SVP`);
+        }
     }
 });
 
