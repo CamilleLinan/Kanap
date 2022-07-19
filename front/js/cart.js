@@ -17,7 +17,7 @@ const getCart = () => {
     return itemsLocalStorage;
 }
 
-// Fonction pour changer la quantité, l'enregistrer et actualiser la page
+// Fonction pour changer la quantité, enregistrer l'information et actualiser la page
 const changeQty = (id, color, qty) => {
     let itemsLocalStorage = getCart();
     for (let i = 0; i < itemsLocalStorage.length; i++) {
@@ -26,6 +26,18 @@ const changeQty = (id, color, qty) => {
         }
         localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
         window.location.reload();
+    }
+}
+
+// Fonction pour supprimer un produit, enregistrer l'information et actualiser la page
+const deleteItem = (id, color) => {
+    let itemsLocalStorage = getCart();
+    for (i = 0; i < itemsLocalStorage.length; i++) {
+        if (id === itemsLocalStorage[i][0] && color === itemsLocalStorage[i][1]) {
+            itemsLocalStorage.splice(i, 1);
+            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+            window.location.reload();
+        }
     }
 }
 
@@ -46,7 +58,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
             .then((data) => {
                 let sectionCart = document.querySelector(`#cart__items`);
                 sectionCart.innerHTML += 
-                    // Changer la quantité --> Utiliser la fonction changeQty dans l'evenement 'onchange'
+                    // Changer la quantité --> Utiliser la fonction changeQty dans l'input avec l'evenement 'onchange'
                     // Supprimer un article --> Evenement onclick
                     `<article class="cart__item" data-id="${id}" data-color="${color}">
                         <div class="cart__item__img">
@@ -67,7 +79,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                                 </div>
                             
                                 <div class="cart__item__content__settings__delete">
-                                    <p class="deleteItem">Supprimer</p>
+                                    <p class="deleteItem" onclick="deleteItem('${id}', '${color}')">Supprimer</p>
                                 </div>
                             </div>
                         </div>
@@ -85,6 +97,9 @@ if (localStorage.getItem(`selectedProduct`) != null) {
         qtyTotal += parseInt(itemsLocalStorage[i][2]);
         document.querySelector('#totalQuantity').innerHTML = qtyTotal;
     }
+
+// Sinon affiche un message
+
 } else {
     document.querySelector(`#cart__items`).innerText = `Votre panier est vide !`;
 }
