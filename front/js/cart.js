@@ -17,7 +17,7 @@ const getCart = () => {
     return itemsLocalStorage;
 }
 
-// Fonction pour changer la quantité
+// Fonction pour changer la quantité, l'enregistrer et actualiser la page
 const changeQty = (id, color, qty) => {
     let itemsLocalStorage = getCart();
     for (let i = 0; i < itemsLocalStorage.length; i++) {
@@ -32,6 +32,8 @@ const changeQty = (id, color, qty) => {
 // Si un panier existe --> Récupérer les éléments du localStorage et les infos produits
 
 let itemsLocalStorage = getCart();
+let qtyTotal = 0;
+let priceTotal = 0;
 
 if (localStorage.getItem(`selectedProduct`) != null) {
     for (let i = 0; i < itemsLocalStorage.length; i++) {
@@ -44,7 +46,8 @@ if (localStorage.getItem(`selectedProduct`) != null) {
             .then((data) => {
                 let sectionCart = document.querySelector(`#cart__items`);
                 sectionCart.innerHTML += 
-                    // Si la quantité change --> Enregistrer la nouvelle quantité et actualiser la page
+                    // Changer la quantité --> Utiliser la fonction changeQty dans l'evenement 'onchange'
+                    // Supprimer un article --> Evenement onclick
                     `<article class="cart__item" data-id="${id}" data-color="${color}">
                         <div class="cart__item__img">
                             <img src="${data.imageUrl}" alt="${data.altTxt}">
@@ -68,7 +71,20 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                                 </div>
                             </div>
                         </div>
-                    </article>`
+                    </article>`;
+                    
+                    // Afficher le prix total
+                    priceTotal += data.price * itemsLocalStorage[i][2];
+                    document.querySelector('#totalPrice').innerHTML = priceTotal;
             })
+            
+            .catch((err) => 
+                document.querySelector(`#cart__items`).innerText = `Oups ! Il y a eu une erreur lors de l'affichage du panier ! :(`);
+        
+        // Afficher la quantité totale
+        qtyTotal += parseInt(itemsLocalStorage[i][2]);
+        document.querySelector('#totalQuantity').innerHTML = qtyTotal;
     }
+} else {
+    document.querySelector(`#cart__items`).innerText = `Votre panier est vide !`;
 }
