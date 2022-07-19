@@ -74,7 +74,6 @@ function qtyValue() {
         let itemsLocalStorage = getCart();
         // Si le panier n'existe pas, le créer dans un array
         if (itemsLocalStorage.length == 0) {
-            console.log(`Le panier n'existe pas`);
             itemsLocalStorage = [[id, color, qty]];
         
         // Si le panier existe
@@ -93,8 +92,9 @@ function qtyValue() {
                 itemsLocalStorage.push(item); 
             }
         }
-
+        
         localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+        alert(`Produit(s) ajouté(s) au panier !`);
     }
 
 // Bouton d'ajout au panier
