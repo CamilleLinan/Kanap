@@ -8,7 +8,7 @@ const id = urlParams.get('id');
 
 const apiUrl = 'http://localhost:3000/api/products/' + id;
 
-// Si il y a un id, appeler le l'api pour chercher les informations du produit d'id
+// Si il y a un id, appeler l'api pour chercher les informations du produit d'id
 
 fetch(apiUrl)
     .then((response) => response.json()
