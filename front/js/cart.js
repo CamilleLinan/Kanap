@@ -17,7 +17,19 @@ const getCart = () => {
     return itemsLocalStorage;
 }
 
-// Si un panier existe --> Récupérer les éléments du localStorage et les infos produits --> les afficher avec fetch
+// Fonction pour changer la quantité
+const changeQty = (id, color, qty) => {
+    let itemsLocalStorage = getCart();
+    for (let i = 0; i < itemsLocalStorage.length; i++) {
+        if (id === itemsLocalStorage[i][0] && color === itemsLocalStorage[i][1]) {
+            itemsLocalStorage[i][2] = qty;
+        }
+        localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+        window.location.reload();
+    }
+}
+
+// Si un panier existe --> Récupérer les éléments du localStorage et les infos produits
 
 let itemsLocalStorage = getCart();
 
@@ -26,6 +38,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
         let id = itemsLocalStorage[i][0];
         let color = itemsLocalStorage[i][1];
         let apiUrl = 'http://localhost:3000/api/products/' + id;
+        // Afficher les données du produit avec fetch
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
@@ -41,13 +54,13 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                             <div class="cart__item__content__description">
                                 <h2>${data.name}</h2>
                                 <p>Couleur : ${color}</p>
-                                <p>Prix : ${data.price} $</p>
+                                <p>Prix : ${data.price} €</p>
                             </div>
                             
                             <div class="cart__item__content__settings">
                                 <div class="cart__item__content__settings__quantity">
                                     <p>Qté : </p>
-                                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemsLocalStorage[i][2]}">
+                                    <input type="number" class="itemQuantity" name="itemQuantity" onchange="changeQty('${id}', '${color}', this.value)" min="1" max="100" value="${itemsLocalStorage[i][2]}">
                                 </div>
                             
                                 <div class="cart__item__content__settings__delete">
