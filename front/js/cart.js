@@ -95,3 +95,76 @@ if (localStorage.getItem(`selectedProduct`) != null) {
 } else {
     document.querySelector(`#cart__items`).innerText = `Votre panier est vide !`;
 }
+
+//******** REMPLIR LE FORMULAIRE ********/
+
+// Mise en place des RegEx classiques
+
+// Variables associées aux différents inputs du formulaire
+const prenom = document.querySelector('#firstName');
+const nom = document.querySelector('#lastName');
+const adresse = document.querySelector('#address');
+const ville = document.querySelector('#city');
+const email = document.querySelector('#email');
+
+// Regex pour validation des prénoms, noms et villes (uniquement des lettres)
+const namesRegEx = new RegExp(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i);
+
+// Regex pour validation de l'adresse (chiffres et/ou lettres)
+const adressRegEx = new RegExp (/^[a-zA-Z0-9]*$/i);
+
+// Evenement d'ecoute de l'input prenom + validation
+prenom.addEventListener('change', function() {
+    validFirstName(this);
+});
+
+const validFirstName = function(inputFirstName) {
+    let testFirstName = namesRegEx.test(inputFirstName.value);
+    
+    console.log(testFirstName);
+};
+
+// Evenement d'ecoute pour l'input nom + validation
+nom.addEventListener('change', function() {
+    validLastName(this);
+});
+
+const validLastName = function(inputLastName) {
+    let testLastName = namesRegEx.test(inputLastName.value);
+    
+    console.log(testLastName);
+};
+
+// Evenement d'ecoute pour l'input adresse + validation
+adresse.addEventListener('change', function() {
+    validAdress(this);
+});
+
+const validAdress = function(inputAdress) {
+    let testAdress = adressRegEx.test(inputAdress.value);
+    
+    console.log(testAdress);
+};
+
+// Evenement d'ecoute pour l'input ville + validation
+ville.addEventListener('change', function() {
+    validCity(this);
+});
+
+const validCity = function(inputCity) {
+    let testCity = adressRegEx.test(inputCity.value);
+    
+    console.log(testCity);
+};
+
+// Evenement d'ecoute pour l'input email + validation
+email.addEventListener('change', function() {
+    validEmail(this);
+});
+
+const validEmail = function(inputEmail) {
+    const emailRegEx = new RegExp ('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+
+    let testEmail = emailRegEx.test(inputEmail.value);
+    console.log(testEmail);
+};
