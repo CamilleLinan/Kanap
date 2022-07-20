@@ -1,12 +1,4 @@
-// Si un panier existe --> Récupérer les infos du localStorage (id + couleur; mettre la qty a 0 pour calculs) et du produit
-
-// Insérer les informations dans le HTML
-
-// Afficher la quantité totale
-
-// Calculer le prix total en fonction de la quantité
-
-//******** TEST ********/
+//******** AFFICHER ET MODIFIER LES ELEMENTS DU PANIER ********/
 
 // Fonction pour récupérer le panier dans le localStorage
 const getCart = () => {   
