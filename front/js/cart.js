@@ -13,8 +13,8 @@ const getCart = () => {
 const changeQty = (id, color, qty) => {
     let itemsLocalStorage = getCart();
     for (let i = 0; i < itemsLocalStorage.length; i++) {
-        if (id === itemsLocalStorage[i][0] && color === itemsLocalStorage[i][1]) {
-            itemsLocalStorage[i][2] = qty;
+        if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
+            itemsLocalStorage[i].qty = qty;
         }
         localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
         window.location.reload();
@@ -25,7 +25,7 @@ const changeQty = (id, color, qty) => {
 const deleteItem = (id, color) => {
     let itemsLocalStorage = getCart();
     for (i = 0; i < itemsLocalStorage.length; i++) {
-        if (id === itemsLocalStorage[i][0] && color === itemsLocalStorage[i][1]) {
+        if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
             itemsLocalStorage.splice(i, 1);
             localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
             window.location.reload();
@@ -41,8 +41,8 @@ let priceTotal = 0;
 
 if (localStorage.getItem(`selectedProduct`) != null) {
     for (let i = 0; i < itemsLocalStorage.length; i++) {
-        let id = itemsLocalStorage[i][0];
-        let color = itemsLocalStorage[i][1];
+        let id = itemsLocalStorage[i].id;
+        let color = itemsLocalStorage[i].color;
         let apiUrl = 'http://localhost:3000/api/products/' + id;
         // Afficher les données du produit avec fetch
         fetch(apiUrl)
@@ -67,7 +67,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                             <div class="cart__item__content__settings">
                                 <div class="cart__item__content__settings__quantity">
                                     <p>Qté : </p>
-                                    <input type="number" class="itemQuantity" name="itemQuantity" onchange="changeQty('${id}', '${color}', this.value)" min="1" max="100" value="${itemsLocalStorage[i][2]}">
+                                    <input type="number" class="itemQuantity" name="itemQuantity" onchange="changeQty('${id}', '${color}', this.value)" min="1" max="100" value="${itemsLocalStorage[i].qty}">
                                 </div>
                             
                                 <div class="cart__item__content__settings__delete">
@@ -78,7 +78,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                     </article>`;
                     
                     // Afficher le prix total
-                    priceTotal += data.price * itemsLocalStorage[i][2];
+                    priceTotal += data.price * itemsLocalStorage[i].qty;
                     document.querySelector('#totalPrice').innerHTML = priceTotal;
             })
             
@@ -86,7 +86,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                 document.querySelector(`#cart__items`).innerText = `Oups ! Il y a eu une erreur lors de l'affichage du panier ! :(`);
         
         // Afficher la quantité totale
-        qtyTotal += parseInt(itemsLocalStorage[i][2]);
+        qtyTotal += parseInt(itemsLocalStorage[i].qty);
         document.querySelector('#totalQuantity').innerHTML = qtyTotal;
     }
 
@@ -107,64 +107,80 @@ const adresse = document.querySelector('#address');
 const ville = document.querySelector('#city');
 const email = document.querySelector('#email');
 
-// Regex pour validation des prénoms, noms et villes (uniquement des lettres)
-const namesRegEx = new RegExp(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i);
+// Regex et fonction pour validation des prénoms, noms et villes (uniquement des lettres)
+const validName = function(inputName) {
+    const namesRegEx = new RegExp(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i);
+    return namesRegEx.test(inputName.value);
+}
 
-// Regex pour validation de l'adresse (chiffres et/ou lettres)
-const adressRegEx = new RegExp (/^[a-zA-Z0-9]*$/i);
+// Regex et fonction pour validation de l'adresse (chiffres et/ou lettres)
+const validAddress = function(inputAddress) {
+    const addressRegEx = new RegExp (/^[a-zA-Z0-9]*$/i);
+    return addressRegEx.test(inputAddress.value);
+}
 
-// Evenement d'ecoute de l'input prenom + validation
-prenom.addEventListener('change', function() {
-    validFirstName(this);
-});
-
-const validFirstName = function(inputFirstName) {
-    let testFirstName = namesRegEx.test(inputFirstName.value);
-    
-    console.log(testFirstName);
-};
-
-// Evenement d'ecoute pour l'input nom + validation
-nom.addEventListener('change', function() {
-    validLastName(this);
-});
-
-const validLastName = function(inputLastName) {
-    let testLastName = namesRegEx.test(inputLastName.value);
-    
-    console.log(testLastName);
-};
-
-// Evenement d'ecoute pour l'input adresse + validation
-adresse.addEventListener('change', function() {
-    validAdress(this);
-});
-
-const validAdress = function(inputAdress) {
-    let testAdress = adressRegEx.test(inputAdress.value);
-    
-    console.log(testAdress);
-};
-
-// Evenement d'ecoute pour l'input ville + validation
-ville.addEventListener('change', function() {
-    validCity(this);
-});
-
-const validCity = function(inputCity) {
-    let testCity = adressRegEx.test(inputCity.value);
-    
-    console.log(testCity);
-};
-
-// Evenement d'ecoute pour l'input email + validation
-email.addEventListener('change', function() {
-    validEmail(this);
-});
-
+// Regex et fonction pour validation de l'adresse (@ et .)
 const validEmail = function(inputEmail) {
     const emailRegEx = new RegExp ('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
-
-    let testEmail = emailRegEx.test(inputEmail.value);
-    console.log(testEmail);
+    return emailRegEx.test(inputEmail.value);
 };
+
+// Evenement d'ecoute de l'input prenom + validation ou erreur
+prenom.addEventListener('change', function() {
+    let valid = validName(this);
+
+    if(valid) {
+        let firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
+        firstNameErrorMsg.innerText = ``;
+    } else {
+        firstNameErrorMsg.innerText = `Veuillez renseigner votre prénom`;
+    }
+});
+
+// Evenement d'ecoute pour l'input nom + validation ou erreur
+nom.addEventListener('change', function() {
+    let valid = validName(this);
+
+    if(valid) {
+        let lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
+        lastNameErrorMsg.innerText = ``;
+    } else {
+        lastNameErrorMsg.innerText = `Veuillez renseigner votre nom`;
+    }
+});
+
+// Evenement d'ecoute pour l'input adresse + validation ou erreur
+adresse.addEventListener('change', function() {
+    let valid = validAddress(this);
+
+    if(valid) {
+        let addressErrorMsg = document.querySelector('#addressErrorMsg');
+        addressErrorMsg.innerText = ``;
+    } else {
+        addressErrorMsg.innerText = `Veuillez renseigner le numéro et le nom de votre adresse`;
+    }
+});
+
+// Evenement d'ecoute pour l'input ville + validation ou erreur
+ville.addEventListener('change', function() {
+    let valid = validAddress(this);
+
+    if(valid) {
+        let cityErrorMsg = document.querySelector('#cityErrorMsg');
+        cityErrorMsg.innerText = ``;
+    } else {
+        cityErrorMsg.innerText = `Veuillez renseigner le code postal et le nom de votre ville`;
+    }
+});
+
+// Evenement d'ecoute pour l'input email + validation ou erreur
+email.addEventListener('change', function() {
+    let valid = validEmail(this);
+
+    if(valid) {
+        let emailErrorMsg = document.querySelector('#emailErrorMsg');
+        emailErrorMsg.innerText = ``;
+    } else {
+        emailErrorMsg.innerText = `Veuillez renseigner votre adresse email`;
+    }
+});
