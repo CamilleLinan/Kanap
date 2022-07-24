@@ -64,7 +64,7 @@ function qtyValue() {
     }
 
 // Fonction ajouter un produit dans le localStorage
-    const add2Cart = (id, color, qty) => {
+    const addToCartHTMLElement = (id, color, qty) => {
     
     // Si la couleur et la quantité sont vides --> Erreur
         if (color == "" || qty <= 0) {
@@ -74,21 +74,21 @@ function qtyValue() {
         let itemsLocalStorage = getCart();
         // Si le panier n'existe pas, le créer dans un array
         if (itemsLocalStorage.length == 0) {
-            itemsLocalStorage = [[id, color, qty]];
+            itemsLocalStorage = [{id: id, color: color, qty: qty}];
         
         // Si le panier existe
         } else {
             let found = false;
             // Si l'id et la couleur de l'item existe déjà dans l'array, incrémenter la quantité choisie à la quantité du panier
             for (let i = 0; i < itemsLocalStorage.length; i++) {
-                if (id === itemsLocalStorage[i][0] && color === itemsLocalStorage[i][1]) {
+                if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
                     found = true;
-                    itemsLocalStorage[i][2] += qty;
+                    itemsLocalStorage[i].qty += qty;
                 }
             }
             // S'ils n'existent pas, créer un nouvel array dans l'array
             if (found == false) {
-                let item = [id, color, qty];
+                let item = {id: id, color: color, qty: qty};
                 itemsLocalStorage.push(item); 
             }
         }
@@ -104,5 +104,5 @@ const addToCart = document.querySelector(`#addToCart`);
 addToCart.addEventListener(`click`, () => {
     let color = colorValue();
     let qty = parseInt(qtyValue());
-    add2Cart(id, color, qty);
+    addToCartHTMLElement(id, color, qty);
 });
