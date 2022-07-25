@@ -6,10 +6,11 @@ const apiUrl = 'http://localhost:3000/api/products';
 fetch(apiUrl)
     .then((response) => response.json()
     .then((data) => {
-        let productsSection = document.querySelector('#items');
+        const parser = new DOMParser();
+        const items = document.querySelector('#items');
 
         for (i = 0; i < data.length; i ++) {
-            let productCard = 
+            let productsItems = 
                 `<a href="./product.html?id=${data[i]._id}">
                     <article>
                         <img src="${data[i].imageUrl}" alt="${data[i].altTxt}" />
@@ -17,7 +18,8 @@ fetch(apiUrl)
                         <p class="productDescription">${data[i].description}</p>
                     </article>
                 </a>`;
-            productsSection.innerHTML += productCard;
+            const displayItems = parser.parseFromString(productsItems, "text/html");
+            items.appendChild(displayItems.body.firstChild);
         }
     }))
 

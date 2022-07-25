@@ -10,14 +10,14 @@ const getCart = () => {
 }
 
 // Fonction pour changer la quantité, enregistrer l'information et actualiser la page
-const changeQty = (id, color, qty) => {
+const changeQty = (id, color, newQty) => {
     let itemsLocalStorage = getCart();
     for (let i = 0; i < itemsLocalStorage.length; i++) {
         if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
-            itemsLocalStorage[i].qty = qty;
+            itemsLocalStorage[i].qty = newQty;
+            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+            window.location.reload();
         }
-        localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
-        window.location.reload();
     }
 }
 
@@ -48,8 +48,9 @@ if (localStorage.getItem(`selectedProduct`) != null) {
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
+                const parser = new DOMParser();
                 let sectionCart = document.querySelector(`#cart__items`);
-                sectionCart.innerHTML += 
+                let detailProductItems = 
                     // Changer la quantité --> Utiliser la fonction changeQty dans l'input avec l'evenement 'onchange'
                     // Supprimer un article --> Evenement onclick
                     `<article class="cart__item" data-id="${id}" data-color="${color}">
@@ -76,6 +77,8 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                             </div>
                         </div>
                     </article>`;
+                const displayDetailProductItems = parser.parseFromString(detailProductItems, "text/html");
+                sectionCart.appendChild(displayDetailProductItems.body.firstChild);
                     
                     // Afficher le prix total
                     priceTotal += data.price * itemsLocalStorage[i].qty;
@@ -85,6 +88,8 @@ if (localStorage.getItem(`selectedProduct`) != null) {
             .catch((err) => 
                 document.querySelector(`#cart__items`).innerText = `Oups ! Il y a eu une erreur lors de l'affichage du panier ! :(`);
         
+            
+
         // Afficher la quantité totale
         qtyTotal += parseInt(itemsLocalStorage[i].qty);
         document.querySelector('#totalQuantity').innerHTML = qtyTotal;
