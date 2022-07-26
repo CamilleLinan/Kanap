@@ -128,6 +128,8 @@ form.addEventListener('submit', (e) => {
         })
             .then((response) => response.json())
             .then((data) => {
+                localStorage.clear();
+                document.querySelector('.cart__order__form').reset();
                 document.location.href = "confirmation.html?id=" + data.orderId;
             })
             .catch(() => {
