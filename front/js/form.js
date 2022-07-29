@@ -115,30 +115,8 @@ mail.addEventListener('change', function() {
 // Ecouter la soumission du formulaire
 const postUrl = 'http://localhost:3000/api/products/order/';
 form.addEventListener('submit', (e) => {
-    // Avant envoie, vérifier que les champs sont valides
     e.preventDefault();
-    if (validFirstName(prenom) && validLastName(nom) && validAddress(adresse) && validCity(ville) && validEmail(mail)) {
-        let sendToServ = createObjectToSend();
-        fetch(postUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: sendToServ,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                localStorage.clear();
-                document.querySelector('.cart__order__form').reset();
-                document.location.href = "confirmation.html?id=" + data.orderId;
-            })
-            .catch(() => {
-                alert(`Une erreur interne est survenue`);
-            });
-    } else {
-        alert(`Vérifiez que tous les champs sont correctement remplis avant de commander !`);
-    }
-
+    sendForm();
 });
 
 // Fonction pour créer l'objet "contact" et les id des produits choisis
@@ -166,4 +144,46 @@ const createObjectToSend = () => {
 
     let sendToServ = JSON.stringify({ contact, products });
     return sendToServ;
+}
+
+// Fonction d'envoie du formulaire
+const sendForm = () => {
+    let itemsLocalStorage = getCart();
+
+    // Si la qty d'un élément est inférieur ou égal à 0 / supérieur ou égal à 101
+    for (i = 0; i < itemsLocalStorage.length; i++) {
+        if (itemsLocalStorage[i].qty <= 0 || itemsLocalStorage[i].qty >= 100) {
+            return alert(`La qté blabla`);
+        }
+    }
+
+    // Si le panier est vide
+    if (itemsLocalStorage.length == 0) {
+        return alert(`Votre panier est vide`);  
+    
+    // Si le panier n'est pas vide
+    } else {
+        // Si tous les champs du formulaire sont valides
+        if (validFirstName(prenom) && validLastName(nom) && validAddress(adresse) && validCity(ville) && validEmail(mail)) {
+            let sendToServ = createObjectToSend();
+            fetch(postUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: sendToServ,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    localStorage.clear();
+                    document.querySelector('.cart__order__form').reset();
+                    document.location.href = "confirmation.html?id=" + data.orderId;
+                })
+                .catch(() => {
+                    alert(`Une erreur interne est survenue`);
+                });
+        } else {
+            return alert(`Vérifiez que tous les champs du formulaire sont correctement remplis.`)
+        }
+    }
 }
