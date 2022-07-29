@@ -1,29 +1,5 @@
 //******** AFFICHER ET MODIFIER LES ELEMENTS DU PANIER ********/
 
-// Fonction pour changer la quantité, enregistrer l'information et actualiser la page
-const changeQty = (id, color, newQty) => {
-    let itemsLocalStorage = getCart();
-    for (let i = 0; i < itemsLocalStorage.length; i++) {
-        if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
-            itemsLocalStorage[i].qty = newQty;
-            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
-            window.location.reload();
-        }
-    }
-}
-
-// Fonction pour supprimer un produit, enregistrer l'information et actualiser la page
-const deleteItem = (id, color) => {
-    let itemsLocalStorage = getCart();
-    for (i = 0; i < itemsLocalStorage.length; i++) {
-        if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
-            itemsLocalStorage.splice(i, 1);
-            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
-            window.location.reload();
-        }
-    }
-}
-
 // Si un panier existe --> Récupérer les éléments du localStorage et les infos produits
 
 let itemsLocalStorage = getCart();
@@ -53,7 +29,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                             <div class="cart__item__content__description">
                                 <h2>${data.name}</h2>
                                 <p>Couleur : ${color}</p>
-                                <p>Prix : ${data.price} €</p>
+                                <p data-id="price-${id}-${color}">Prix : ${data.price} €</p>
                             </div>
                             
                             <div class="cart__item__content__settings">
@@ -71,23 +47,61 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                 const displayDetailProductItems = parser.parseFromString(detailProductItems, "text/html");
                 sectionCart.appendChild(displayDetailProductItems.body.firstChild);
                     
-                    // Afficher le prix total
-                    priceTotal += data.price * itemsLocalStorage[i].qty;
-                    document.querySelector('#totalPrice').innerHTML = priceTotal;
+                // Afficher le prix total
+                priceTotal += data.price * itemsLocalStorage[i].qty;
+                document.querySelector('#totalPrice').innerHTML = priceTotal;
+
+                // Afficher la quantité totale
+                qtyTotal += parseInt(itemsLocalStorage[i].qty);
+                document.querySelector('#totalQuantity').innerHTML = qtyTotal;
             })
             
             .catch((err) => 
                 document.querySelector(`#cart__items`).innerText = `Oups ! Il y a eu une erreur lors de l'affichage du panier ! :(`);
-        
-            
-
-        // Afficher la quantité totale
-        qtyTotal += parseInt(itemsLocalStorage[i].qty);
-        document.querySelector('#totalQuantity').innerHTML = qtyTotal;
     }
 
 // Sinon affiche un message
 
 } else {
     document.querySelector(`#cart__items`).innerText = `Votre panier est vide !`;
+}
+
+// Fonction pour changer la quantité
+const changeQty = (id, color, newQty) => {
+    let itemsLocalStorage = getCart();
+    let item = itemsLocalStorage.find(
+        (itemsLocalStorage) =>
+            id === itemsLocalStorage.id && color === itemsLocalStorage.color
+    );
+    let previousQty = item.qty;
+    let newQuantity = parseInt(newQty);
+
+    item.qty = newQuantity;
+    localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+    
+    // Changer la quantité totale
+    let totalQtyBefore = parseInt(document.querySelector(`#totalQuantity`).innerHTML);
+    let totalQtyAfter = totalQtyBefore - previousQty + newQuantity;
+    document.querySelector(`#totalQuantity`).innerHTML = totalQtyAfter;
+
+    // Changer le prix total
+    let totalPriceBefore = parseInt(document.querySelector(`#totalPrice`).innerHTML);
+    
+    let priceItem = parseInt(document.querySelector(`p[data-id=price-${id}-${color}]`).innerHTML);
+    
+    console.log(priceItem);
+
+    let totalPriceAfter = totalPriceBefore - (priceItem * previousQty) + (priceItem * newQuantity);
+    document.querySelector(`#totalPrice`).innerHTML = totalPriceAfter;
+}
+
+// Fonction pour supprimer un produit
+const deleteItem = (id, color) => {
+    let itemsLocalStorage = getCart();
+    for (i = 0; i < itemsLocalStorage.length; i++) {
+        if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
+            itemsLocalStorage.splice(i, 1);
+            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
+        }
+    }
 }
