@@ -20,7 +20,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                 let detailProductItems = 
                     // Changer la quantité --> Utiliser la fonction changeQty dans l'input avec l'evenement 'onchange'
                     // Supprimer un article --> Evenement onclick
-                    `<article class="cart__item" data-id="${id}" data-color="${color}">
+                    `<article class="cart__item" data-id="${id}" data-color="${id}">
                         <div class="cart__item__img">
                             <img src="${data.imageUrl}" alt="${data.altTxt}">
                         </div>
@@ -35,7 +35,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                             <div class="cart__item__content__settings">
                                 <div class="cart__item__content__settings__quantity">
                                     <p>Qté : </p>
-                                    <input type="number" class="itemQuantity" name="itemQuantity" onchange="changeQty('${id}', '${color}', this.value)" min="1" max="100" value="${itemsLocalStorage[i].qty}">
+                                    <input type="number" class="itemQuantity" name="itemQuantity" onchange="changeQty('${id}', '${color}', '${data.price}', this.value)" min="1" max="100" value="${itemsLocalStorage[i].qty}">
                                 </div>
                             
                                 <div class="cart__item__content__settings__delete">
@@ -67,41 +67,41 @@ if (localStorage.getItem(`selectedProduct`) != null) {
 }
 
 // Fonction pour changer la quantité
-const changeQty = (id, color, newQty) => {
+const changeQty = (id, color, price, newQty) => {
     let itemsLocalStorage = getCart();
     let item = itemsLocalStorage.find(
         (itemsLocalStorage) =>
             id === itemsLocalStorage.id && color === itemsLocalStorage.color
     );
+    
+    // Changer la quantité dans le localStorage
     let previousQty = item.qty;
     let newQuantity = parseInt(newQty);
-
+    
     item.qty = newQuantity;
     localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
     
     // Changer la quantité totale
     let totalQtyBefore = parseInt(document.querySelector(`#totalQuantity`).innerHTML);
     let totalQtyAfter = totalQtyBefore - previousQty + newQuantity;
+    
     document.querySelector(`#totalQuantity`).innerHTML = totalQtyAfter;
 
     // Changer le prix total
-    let totalPriceBefore = parseInt(document.querySelector(`#totalPrice`).innerHTML);
-    
-    let priceItem = parseInt(document.querySelector(`p[data-id=price-${id}-${color}]`).innerHTML);
-    
-    console.log(priceItem);
+    let priceItem = parseInt(price);
 
+    let totalPriceBefore = parseInt(document.querySelector(`#totalPrice`).innerHTML);
     let totalPriceAfter = totalPriceBefore - (priceItem * previousQty) + (priceItem * newQuantity);
+    
     document.querySelector(`#totalPrice`).innerHTML = totalPriceAfter;
 }
 
 // Fonction pour supprimer un produit
 const deleteItem = (id, color) => {
     let itemsLocalStorage = getCart();
-    for (i = 0; i < itemsLocalStorage.length; i++) {
-        if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
-            itemsLocalStorage.splice(i, 1);
-            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
-        }
-    }
+    let item = itemsLocalStorage.find(
+        (itemsLocalStorage) =>
+            id === itemsLocalStorage.id && color === itemsLocalStorage.color
+    );
+
 }
