@@ -57,32 +57,32 @@ function qtyValue() {
 // Fonction ajouter un produit dans le localStorage
     const addToCartHTMLElement = (id, color, qty) => {
     
-        // Si la couleur et la quantité sont vides --> Erreur
+        // Si la couleur est vide --> Erreur
         if (color == "") {
             return alert(`Veuillez choisir une couleur SVP`);
         }
 
-        // Si la quantité n'est pas entre 1 et 100
+        // Si la quantité n'est pas entre 1 et 100 --> Erreur 
         if (qty <= 0 || qty >= 101) {
             return alert(`Veuillez choisir une quantité entre 1 et 100 SVP`)
         }
         
         let itemsLocalStorage = getCart();
-        // Si le panier n'existe pas, le créer dans un array
+        // Si le panier n'existe pas, le créer dans objet dans un tableau
         if (itemsLocalStorage.length == 0) {
             itemsLocalStorage = [{id: id, color: color, qty: qty}];
         
         // Si le panier existe
         } else {
             let found = false;
-            // Si l'id et la couleur de l'item existe déjà dans l'array, incrémenter la quantité choisie à la quantité du panier
+            // Si l'id et la couleur de l'item existe déjà dans le tableau du panier, incrémenter la quantité choisie à la quantité du panier
             for (let i = 0; i < itemsLocalStorage.length; i++) {
                 if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
                     found = true;
                     itemsLocalStorage[i].qty += qty;
                 }
             }
-            // S'ils n'existent pas, créer un nouvel array dans l'array
+            // S'ils n'existent pas, créer un nouvel objet item dans le tableau du panier
             if (found == false) {
                 let item = {id: id, color: color, qty: qty};
                 itemsLocalStorage.push(item); 
