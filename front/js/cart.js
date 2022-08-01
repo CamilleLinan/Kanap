@@ -104,7 +104,7 @@ const deleteItem = (id, color, price, qty) => {
             itemsLocalStorage.splice(i, 1);
             localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
 
-            let itemToDelete = document.querySelector(`.cart__item[data-id="${id}"][data-color="${color}"]`);
+            let itemToDelete = document.querySelector(`.cart__item`);
             itemToDelete.setAttribute("style", "display:none");
 
             // Changer la quantité dans le localStorage
