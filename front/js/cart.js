@@ -99,7 +99,12 @@ const changeQty = (id, color, price, newQty) => {
 // Fonction pour supprimer un produit
 const deleteItem = (id, color, price, qty) => {
     let itemsLocalStorage = getCart();
-    for (i = 0; i < itemsLocalStorage.length; i++) {
+    let item = itemsLocalStorage.find(
+        (itemsLocalStorage) =>
+            id === itemsLocalStorage.id && color === itemsLocalStorage.color
+    );
+    
+    /* for (i = 0; i < itemsLocalStorage.length; i++) {
         if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
             itemsLocalStorage.splice(i, 1);
             localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
@@ -134,5 +139,5 @@ const deleteItem = (id, color, price, qty) => {
             }
         
         }
-    }
+    } */
 }

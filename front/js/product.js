@@ -57,9 +57,14 @@ function qtyValue() {
 // Fonction ajouter un produit dans le localStorage
     const addToCartHTMLElement = (id, color, qty) => {
     
-    // Si la couleur et la quantité sont vides --> Erreur
-        if (color == "" || qty <= 0) {
-            return alert(`Veuillez choisir une couleur et une quantité SVP`);
+        // Si la couleur et la quantité sont vides --> Erreur
+        if (color == "") {
+            return alert(`Veuillez choisir une couleur SVP`);
+        }
+
+        // Si la quantité n'est pas entre 1 et 100
+        if (qty <= 0 || qty >= 101) {
+            return alert(`Veuillez choisir une quantité entre 1 et 100 SVP`)
         }
         
         let itemsLocalStorage = getCart();
