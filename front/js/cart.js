@@ -20,7 +20,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                 let detailProductItems = 
                     // Changer la quantité --> Utiliser la fonction changeQty dans l'input avec l'evenement 'onchange'
                     // Supprimer un article --> Evenement onclick
-                    `<article class="cart__item" data-id="${id}" data-color="${id}">
+                    `<article class="cart__item" data-id="${id}" data-color="${color}">
                         <div class="cart__item__img">
                             <img src="${data.imageUrl}" alt="${data.altTxt}">
                         </div>
@@ -104,7 +104,7 @@ const deleteItem = (id, color, price, qty) => {
             itemsLocalStorage.splice(i, 1);
             localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
 
-            let itemToDelete = document.querySelector(`.cart__item`);
+            let itemToDelete = document.querySelector(`.cart__item[data-id="${id}"][data-color="${color}"]`);
             itemToDelete.setAttribute("style", "display:none");
 
             // Changer la quantité dans le localStorage
