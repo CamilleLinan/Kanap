@@ -1,7 +1,7 @@
 //******** AFFICHER ET MODIFIER LES ELEMENTS DU PANIER ********/
 
 // Si un panier existe --> Récupérer les éléments du localStorage et les infos produits
-
+async function fetchCart() {
 let itemsLocalStorage = getCart();
 let qtyTotal = 0;
 let priceTotal = 0;
@@ -12,7 +12,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
         let color = itemsLocalStorage[i].color;
         let apiUrl = 'http://localhost:3000/api/products/' + id;
         // Afficher les données du produit avec fetch
-        fetch(apiUrl)
+        await fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
                 const parser = new DOMParser();
@@ -64,6 +64,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
 
 } else {
     document.querySelector(`#cart__items`).innerText = `Votre panier est vide !`;
+}
 }
 
 // Fonction pour changer la quantité
@@ -130,3 +131,5 @@ const deleteItem = (id, color, price, qty) => {
         }
     }
 }
+
+fetchCart();
