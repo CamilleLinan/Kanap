@@ -153,7 +153,7 @@ const sendForm = () => {
     // Si la qty d'un élément est inférieur ou égal à 0 / supérieur ou égal à 101
     for (i = 0; i < itemsLocalStorage.length; i++) {
         if (itemsLocalStorage[i].qty <= 0 || itemsLocalStorage[i].qty >= 101) {
-            return alert(`Vérifiez que la quantité est comprise entre 0 et 100`);
+            return alert(`Vérifiez que la quantité est comprise entre 1 et 100`);
         }
     }
 

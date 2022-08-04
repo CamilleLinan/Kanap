@@ -31,9 +31,14 @@ fetch(apiUrl)
         desc.innerHTML = `${data.description}`;
 
         // Afficher les couleurs
-        let color = document.querySelector(`#colors`);
+        const parser = new DOMParser();
+        const colors = document.querySelector('#colors');
+        
         for (i = 0; i < data.colors.length; i++) {
-            color.innerHTML += `<option value='${data.colors[i]}'>${data.colors[i]}</option>`;
+            let productsColors = 
+                `<option value='${data.colors[i]}'>${data.colors[i]}</option>`;
+            const displayColors = parser.parseFromString(productsColors, "text/html");
+            colors.appendChild(displayColors.body.firstChild);
         }
     }))
     
