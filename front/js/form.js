@@ -28,7 +28,7 @@ const validFirstName = function(inputFirstName) {
         firstNameErrorMsg.innerText = ``;
         return true;
     } else {
-        firstNameErrorMsg.innerText = `Veuillez renseigner votre prénom`;
+        firstNameErrorMsg.innerText = `Veuillez renseigner votre prénom (caractères autorisés : ',. -)`;
         return false;
     }
 }
@@ -41,7 +41,7 @@ const validLastName = function(inputLastName) {
         lastNameErrorMsg.innerText = ``;
         return true;
     } else {
-        lastNameErrorMsg.innerText = `Veuillez renseigner votre nom`;
+        lastNameErrorMsg.innerText = `Veuillez renseigner votre nom (caractères autorisés : ',. -)`;
         return false;
     }
 }
@@ -54,7 +54,7 @@ const validAddress = function(inputAddress) {
         addressErrorMsg.innerText = ``;
         return true;
     } else {
-        addressErrorMsg.innerText = `Veuillez renseigner le numéro et le nom de votre adresse`;
+        addressErrorMsg.innerText = `Veuillez renseigner le numéro et le nom de votre adresse (caractères autorisés : ',. -)`;
         return false;
     }
 }
@@ -67,7 +67,7 @@ const validCity = function(inputCity) {
         cityErrorMsg.innerText = ``;
         return true;
     } else {
-        cityErrorMsg.innerText = `Veuillez renseigner le code postal et le nom de votre ville`;
+        cityErrorMsg.innerText = `Veuillez renseigner le code postal et le nom de votre ville (caractères autorisés : ',. -)`;
         return false;
     }
 }
@@ -153,13 +153,13 @@ const sendForm = () => {
     // Si la qty d'un élément est inférieur ou égal à 0 / supérieur ou égal à 101
     for (i = 0; i < itemsLocalStorage.length; i++) {
         if (itemsLocalStorage[i].qty <= 0 || itemsLocalStorage[i].qty >= 101) {
-            return alert(`Vérifiez que la quantité est comprise entre 1 et 100`);
+            return alert(`La quantié d'un article n'est pas comprise entre 1 et 100`);
         }
     }
 
     // Si le panier est vide
     if (itemsLocalStorage.length == 0) {
-        return alert(`Votre panier est vide`);  
+        return alert(`Votre panier est vide !`);  
     
     // Si le panier n'est pas vide
     } else {
@@ -183,7 +183,7 @@ const sendForm = () => {
                     alert(`Une erreur interne est survenue`);
                 });
         } else {
-            return alert(`Vérifiez que tous les champs du formulaire sont correctement remplis.`)
+            return alert(`Veuillez vérifier que tous les champs du formulaire sont correctement remplis.`)
         }
     }
 }

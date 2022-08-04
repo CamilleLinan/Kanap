@@ -43,7 +43,7 @@ fetch(apiUrl)
     }))
     
     .catch((err) => 
-        document.querySelector('.item').innerText = `Oups ! Il y a eu une erreur lors de l'affichage du produit ! :(`);
+        document.querySelector('.item').innerText = `Le produit est introuvable !`);
 
 //******** Récuperer les valeurs du HTML sélectionnées par l'utilisateur ********/
 
@@ -64,12 +64,12 @@ function qtyValue() {
     
         // Si la couleur est vide --> Erreur
         if (color == "") {
-            return alert(`Veuillez choisir une couleur SVP`);
+            return alert(`Veuillez choisir une couleur`);
         }
 
         // Si la quantité n'est pas entre 1 et 100 --> Erreur 
         if (qty <= 0 || qty >= 101) {
-            return alert(`Veuillez choisir une quantité entre 1 et 100 SVP`)
+            return alert(`Veuillez choisir une quantité entre 1 et 100`)
         }
         
         let itemsLocalStorage = getCart();
