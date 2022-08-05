@@ -2,6 +2,7 @@
 
 // Si un panier existe --> Récupérer les éléments du localStorage et les infos produits
 async function fetchCart() {
+
 let itemsLocalStorage = getCart();
 let qtyTotal = 0;
 let priceTotal = 0;
@@ -10,13 +11,22 @@ if (localStorage.getItem(`selectedProduct`) != null) {
     for (let i = 0; i < itemsLocalStorage.length; i++) {
         let id = itemsLocalStorage[i].id;
         let color = itemsLocalStorage[i].color;
+        let sectionCart = document.querySelector(`#cart__items`);
         let apiUrl = 'http://localhost:3000/api/products/' + id;
         // Afficher les données du produit avec fetch
-        await fetch(apiUrl)
-            .then((response) => response.json())
-            .then((data) => {
-                const parser = new DOMParser();
-                let sectionCart = document.querySelector(`#cart__items`);
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            let productError = `<article class="cart__item">
+            <p>Oups ! Il y a eu une erreur lors de la récupération d'un élément du panier ! :(</p> </article>`;
+            
+            const parser = new DOMParser();
+            const displayErrorProductItems = parser.parseFromString(productError, "text/html");
+
+            sectionCart.appendChild(displayErrorProductItems.body.firstChild);
+        
+        } else {
+            const data = await response.json();
+            const parser = new DOMParser();
                 let detailProductItems = 
                     // Changer la quantité --> Utiliser la fonction changeQty dans l'input avec l'evenement 'onchange'
                     // Supprimer un article --> Evenement onclick
@@ -54,10 +64,7 @@ if (localStorage.getItem(`selectedProduct`) != null) {
                 // Afficher la quantité totale
                 qtyTotal += parseInt(itemsLocalStorage[i].qty);
                 document.querySelector('#totalQuantity').innerHTML = qtyTotal;
-            })
-            
-            .catch((err) => 
-                document.querySelector(`#cart__items`).innerText = `Oups ! Il y a eu une erreur lors de l'affichage du panier ! :(`);
+        }
     }
 
 // Sinon affiche un message
