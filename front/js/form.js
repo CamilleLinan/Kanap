@@ -28,7 +28,7 @@ const validFirstName = function(inputFirstName) {
         firstNameErrorMsg.innerText = ``;
         return true;
     } else {
-        firstNameErrorMsg.innerText = `Veuillez renseigner votre prénom (caractères autorisés : ',. -)`;
+        firstNameErrorMsg.innerText = `Veuillez renseigner votre prénom (Les chiffres et les caractères spéciaux ne sont pas autorisés)`;
         return false;
     }
 }
@@ -41,7 +41,7 @@ const validLastName = function(inputLastName) {
         lastNameErrorMsg.innerText = ``;
         return true;
     } else {
-        lastNameErrorMsg.innerText = `Veuillez renseigner votre nom (caractères autorisés : ',. -)`;
+        lastNameErrorMsg.innerText = `Veuillez renseigner votre nom (Les chiffres et les caractères spéciaux ne sont pas autorisés)`;
         return false;
     }
 }
@@ -54,7 +54,7 @@ const validAddress = function(inputAddress) {
         addressErrorMsg.innerText = ``;
         return true;
     } else {
-        addressErrorMsg.innerText = `Veuillez renseigner le numéro et le nom de votre adresse (caractères autorisés : ',. -)`;
+        addressErrorMsg.innerText = `Veuillez renseigner le numéro et le nom de votre adresse (Les caractères spéciaux ne sont pas autorisés)`;
         return false;
     }
 }
@@ -67,7 +67,7 @@ const validCity = function(inputCity) {
         cityErrorMsg.innerText = ``;
         return true;
     } else {
-        cityErrorMsg.innerText = `Veuillez renseigner le code postal et le nom de votre ville (caractères autorisés : ',. -)`;
+        cityErrorMsg.innerText = `Veuillez renseigner le code postal et le nom de votre ville (Les caractères spéciaux ne sont pas autorisés)`;
         return false;
     }
 }
@@ -80,7 +80,7 @@ const validEmail = function(inputEmail) {
         emailErrorMsg.innerText = ``;
         return true;
     } else {
-        emailErrorMsg.innerText = `Veuillez renseigner votre adresse mail`;
+        emailErrorMsg.innerText = `Veuillez renseigner votre adresse mail, elle doit contenir "@" et un point`;
         return false;
     } 
 }

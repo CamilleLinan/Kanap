@@ -63,6 +63,10 @@ function qtyValue() {
     const addToCartHTMLElement = (id, color, qty) => {
     
         // Si la couleur est vide --> Erreur
+        if (color == "" && qty == "0") {
+            return alert(`Veuillez choisir une couleur et une quantité entre 1 et 100`)
+        }
+
         if (color == "") {
             return alert(`Veuillez choisir une couleur`);
         }
@@ -71,7 +75,7 @@ function qtyValue() {
         if (qty <= 0 || qty >= 101) {
             return alert(`Veuillez choisir une quantité entre 1 et 100`)
         }
-        
+
         let itemsLocalStorage = getCart();
         // Si le panier n'existe pas, le créer dans objet dans un tableau
         if (itemsLocalStorage.length == 0) {
