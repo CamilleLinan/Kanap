@@ -49,7 +49,7 @@ async function fetchCart() {
                                     </div>
                                 
                                     <div class="cart__item__content__settings__delete">
-                                        <p class="deleteItem" onclick="deleteItem('${id}', '${color}', '${data.price}','${itemsLocalStorage[i].qty}')">Supprimer</p>
+                                        <p class="deleteItem" onclick="deleteItem('${id}', '${color}', '${data.price}')">Supprimer</p>
                                     </div>
                                 </div>
                             </div>
@@ -112,18 +112,16 @@ const changeQty = (id, color, price, newQty) => {
 }
 
 // Fonction pour supprimer un produit
-const deleteItem = (id, color, price, qty) => {
+const deleteItem = (id, color, price) => {
     let itemsLocalStorage = getCart();
     for (i = 0; i < itemsLocalStorage.length; i++) {
         if (id === itemsLocalStorage[i].id && color === itemsLocalStorage[i].color) {
+            let qtyToDelete = itemsLocalStorage[i].qty;
             itemsLocalStorage.splice(i, 1);
-            localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
 
             let itemToDelete = document.querySelector(`.cart__item[data-id="${id}"][data-color="${color}"]`);
             itemToDelete.setAttribute("style", "display:none");
 
-            // Changer la quantité dans le localStorage
-            let qtyToDelete = qty;
             localStorage.setItem(`selectedProduct`, JSON.stringify(itemsLocalStorage));
 
             // Changer la quantité totale
