@@ -12,7 +12,7 @@ This is the front end and back end server for Project 5 of the Web Developer pat
 
 + Vous pouvez démarrer le serveur avec 'node server', il devrait se lancer sur le 'localhost' avec par défaut le port 3000.
 
-![Alt text](/lapanthereCover.webp?raw=true "Cover Booki OpenClassrooms")
+![Alt text](/kanapCover.webp?raw=true "Cover Kanap OpenClassrooms")
 
 + Contexte : 
 Kanap est une marque de canapés qui vend ses produits depuis sa boutique exclusivement. Aujourd’hui, celle-ci souhaiterait avoir une plateforme de e-commerce en plus de sa boutique physique pour vendre ses produits sur Internet.
